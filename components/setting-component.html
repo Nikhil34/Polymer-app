@@ -1,0 +1,100 @@
+<link rel="import"  href="../bower_components/polymer/polymer.html">
+<link rel="import"  href="custom-behvaiors.html">
+
+<!-- Component defination goes like below-->
+<dom-module id="setting-component">
+
+    <style>
+    </style>
+    <template>
+
+        <link rel="import"  href="../bower_components/paper-input/paper-input.html">
+        <paper-input class="drawer" label="Title" value={{someProp}}></paper-input>
+        
+        <!--- Chart Type !-->
+        <link rel="import"  href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+        <paper-dropdown-menu label="Charts">
+
+            <link rel="import"  href="../bower_components/paper-listbox/paper-listbox.html">
+            <paper-listbox class="dropdown-content" selected="1" on-click="handleClick">
+
+                <link rel="import"  href="../bower_components/paper-item/paper-item.html">
+                <template is="dom-repeat" items="{{dropdownOption}}">
+                    <paper-item {{item}}>{{item}}</paper-item>
+                </template>
+
+            </paper-listbox>
+
+        </paper-dropdown-menu>
+        
+        <!--- Timespan !-->
+        <paper-dropdown-menu label="Timespan">
+
+            <paper-listbox class="dropdown-content" selected="{{selectedTimeSpan}}" iron-select="{{selectAction}}">
+                
+                <template is="dom-repeat" items="{{weeks}}">
+                    <paper-item {{item}}>{{item}}</paper-item>
+                </template>
+
+            </paper-listbox>
+
+        </paper-dropdown-menu>
+        
+        
+
+    </template>
+
+<dom-module>
+
+<script>
+
+Polymer({
+
+	is:"setting-component",
+	
+    properties:{
+				  someProp:{notify:true},
+                  weeks:{
+                            type:Array,
+				            notify:true,
+                            value:["Past 1 weeks","Past 2 Weeks","Past 3 weeks"]
+                  },
+                  selectedTimeSpan: {
+                            type: Number,
+                            value: 2,
+                            observer: '_selectedTimeSpanChanged'
+                  },
+                  responseData:{
+                    type:Array,
+                    notify:true
+                  }
+               
+                  
+    },
+	
+    ready: function(){
+        console.log(this.weeks);
+		this.dropdownOption = ['Bar','Pie'];
+	},
+    
+    handleClick: function(e, detail) {
+		selectedValue = document.querySelector('paper-dropdown-menu').selectedItemLabel;
+		this.domHost.changeChart(selectedValue); // to call the function of parent 
+    },
+    
+    _selectedTimeSpanChanged:function(){
+        
+        if(this.selectedTimeSpan == 0){
+            this.domHost.changeChartTimeSpan(1); // to call the function of parent 
+        }else if(this.selectedTimeSpan == 1){
+            this.domHost.changeChartTimeSpan(2); // to call the function of parent 
+        }else{
+            this.domHost.changeChartTimeSpan(3); // to call the function of parent 
+        }
+    }
+   
+    
+   
+});
+
+</script>

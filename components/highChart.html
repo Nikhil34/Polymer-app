@@ -1,0 +1,200 @@
+<link rel="import"  href="../bower_components/polymer/polymer.html">
+<link rel="import"  href="custom-behvaiors.html">
+
+<dom-module id="high-chart">
+
+		<style>
+
+            #container{
+
+                padding: 30px;
+            }
+
+		</style>
+
+		<template>
+            <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+            <iron-ajax 
+                auto
+                id="ajax" 
+                url="../bar-chart.json" 
+                last-response="{{responseData}}"
+                handle-as="json"
+            >
+            </iron-ajax>
+            
+            <!-- <template is="dom-repeat" items="{{test}}">
+                <div>{{item.status}}</div>
+            </template> !-->
+            
+            
+            <div id="container" style="min-width: 310px; max-width: 800px; height: 400px; margin: 0 auto">
+                
+              
+            </div>
+			
+		</template>
+
+</dom-module>
+
+<script>
+    var today = moment();
+    var data = {};
+    
+    dataClose = [] ;
+    dataOpen = [] ;
+    dataDate = [] ;
+
+Polymer({
+	
+	is:"high-chart",
+    
+    properties:{
+                  someProp:{notify:true},
+                  selectedValue:{notify:true,value:'Bar',observer: '_changeChart'},
+                  selectedTime:{notify:true, observer:'_filterData'},
+                  responseData:{type:Array, notify:true,observer:'_onLoadResponseHandler'}
+             
+    },
+    
+    _onLoadResponseHandler:function(){
+        this.domHost.passJson(this.responseData);
+        this._processResponse(this.responseData);
+        this._filterData();
+    },
+    
+    _processResponse(response){
+        
+        for(var i =0; i < response.length;i++){
+            
+            if(typeof data[response[i]['created_date']] == 'undefined'){
+                data[response[i]['created_date']] = [];
+                data[response[i]['created_date']].open= [];
+                data[response[i]['created_date']].close= [];    
+                data[response[i]['created_date']].parent = function(){return data[response[i]['created_date']] };
+                
+            }
+            
+            if(response[i]['status'] === 'Open'){
+                data[response[i]['created_date']].open.push(1);
+            
+            }else if(response[i]['status'] === 'Close'){
+                data[response[i]['created_date']].close.push(1);
+            }
+        }
+    },
+    
+    _filterData(){
+        dataClose = [] ;
+        dataOpen = [] ;
+        dataDate = [] ;
+        for(var j =0; j < 6*this.selectedTime;j++){
+            
+            var tomorrow = moment(today).subtract(j, "day").format("MM/DD/YYYY");
+             
+            if(typeof data[tomorrow] != 'undefined'){
+                
+                dataClose.push(data[tomorrow].close.length);
+                dataOpen.push(data[tomorrow].open.length);
+                dataDate.push(tomorrow);
+            }
+        }
+        
+        if(this.selectedValue == 'Bar'){
+           
+            var barChartOption = this._generateBarChartOption(dataClose,dataOpen,dataDate)
+            var chart1 = new Highcharts.Chart(barChartOption);
+        
+        }else if(this.selectedValue == 'Pie'){
+            
+            var sumClose = dataClose.reduce(function(a, b) { return a + b; }, 0);
+            var sumOpen = dataOpen.reduce(function(a, b) { return a + b; }, 0);
+            
+            var pieChartOption = this._generatePieChartOption(sumClose,sumOpen)
+            var chart2 = new Highcharts.Chart(pieChartOption);
+        
+        }
+    },
+    
+    /*
+    *@description - Method is called when Drop value is changed in setting component
+    *Generates the chart based on the section on front end
+    */
+    _changeChart:function(){
+        
+        if(this.selectedValue == 'Bar'){
+        
+            var barChartOption = this._generateBarChartOption(dataClose,dataOpen,dataDate)
+            var chart1 = new Highcharts.Chart(barChartOption);
+        
+        }else if(this.selectedValue == 'Pie'){
+            
+            var sumClose = dataClose.reduce(function(a, b) { return a + b; }, 0);
+            var sumOpen = dataOpen.reduce(function(a, b) { return a + b; }, 0);
+            var pieChartOption = this._generatePieChartOption(sumClose,sumOpen)
+            var chart2 = new Highcharts.Chart(pieChartOption);
+        
+        }
+    },  
+    
+    _generateBarChartOption: function(dataClose,dataOpen,dates){
+        
+        return {
+                    chart: {
+                        renderTo: 'container',
+                        type: 'bar'
+                    },
+                    title: {
+                        text: 'Chart'
+                    },
+                    xAxis: {
+                        categories:dates,
+                        title: {
+                            text: null
+                        }
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Ticket Count'
+                        }
+                    },
+                    series: [{
+                        name: 'Close',
+                        data: dataClose
+                    },{
+                        name: 'Open',
+                        data: dataOpen
+                    }]
+             }
+    },
+    
+    _generatePieChartOption: function(sumClose,sumOpen){
+        
+        return{
+                     chart: {
+                                renderTo: 'container',
+                                type: 'pie'
+                            },
+                     title: {
+                                text: 'Chart'
+                            },
+                     series: [{
+                                name: '',
+                                colorByPoint: true,
+                                data: [{
+                                    name: 'Open',
+                                    y: sumOpen
+                                },{
+                                    name: 'Closed',
+                                    y: sumClose
+                                }]
+                            }]
+              }  
+    },
+   
+});
+
+
+
+
+</script>

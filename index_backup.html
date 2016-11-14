@@ -1,0 +1,60 @@
+<!--
+1-	Node Js and NPM command is needed.
+2-	Bower & GIT is needed
+3-	Polyserve – npm install polyserve –g  - this command will install Server
+4-	Bower init  - Give name and discription
+5-	Bower install polymer - will get Polymer Lib
+6-	Polyserver – will start the server 
+-->
+
+<! Doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Polymer First Component</title>
+	<link rel="import" href="bower_components/webcomponentsjs/webcomponents-lite.js">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+	<script src="https://code.highcharts.com/modules/exporting.js"></script>
+	<link rel="import"  href="components/firstComponent.html">
+	<link rel="import"  href="components/highChart.html">
+	<link rel="import" href="bower_components/paper-input/paper-input.html">
+	
+</head>
+<body class="vertical layout" style="background-color:#dddddd">
+
+	<link rel="import" href="bower_components/paper-drawer-panel/paper-drawer-panel.html">
+	<paper-drawer-panel>
+		<link rel="import" href="bower_components/paper-header-panel/paper-header-panel.html">
+		<paper-header-panel drawer>
+				<div>Polymer Project1</div>	
+				<link rel="import" href="bower_components/paper-menu/paper-menu.html">
+				<paper-menu>
+					<link rel="import" href="bower_components/paper-item/paper-item.html">
+					<paper-item>Menu 1</paper-item>
+					<paper-item>Menu 2</paper-item>
+					<paper-item>Menu 3</paper-item>
+				</paper-menu>
+		</paper-header-panel>
+		<paper-header-panel main>
+			
+		
+				<link rel="import" href="bower_components/paper-material/paper-material.html">
+				<paper-material style="background-color:#fff">
+					
+					<link rel="import" href="bower_components/paper-toolbar/paper-toolbar.html">
+					<paper-toolbar><div>Polymer Project</div></paper-toolbar>
+					<link rel="import" href ="bower_components/google-youtube/google-youtube.html">
+					<google-youtube video-id="dMtnllatakc"> </google-youtube>
+					<p> This video is about Polymer Js </p>
+				</paper-material>
+		
+		</paper-header-panel>
+	</paper-drawer-panel>
+
+	
+	
+
+
+</body>
+</html>

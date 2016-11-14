@@ -1,0 +1,122 @@
+<!--
+1-	Node Js and NPM command is needed.
+2-	Bower & GIT is needed
+3-	Polyserve – npm install polyserve –g  - this command will install Server
+4-	Bower init  - Give name and discription
+5-	Bower install polymer - will get Polymer Lib
+6-	Polyserver – will start the server 
+-->
+<! Doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Polymer First Component</title>
+	<link rel="import" href="bower_components/webcomponentsjs/webcomponents-lite.js">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+	<script src="https://code.highcharts.com/modules/exporting.js"></script>
+    
+    <script src="bower_components/moment/moment.js"></script>
+	
+	<link rel="import" href="bower_components/paper-input/paper-input.html">
+    
+    <link rel="import" href ="bower_components/iron-icon/iron-icon.html">
+    <link rel="import" href ="bower_components/iron-icons/iron-icons.html">
+
+	
+</head>
+<body class="vertical layout" style="background-color:#dddddd">
+
+	<index-component></index-component>
+
+	
+</body>
+</html>
+
+<dom-module id="index-component">
+
+		<style>
+			
+		</style>
+		<template>
+
+			
+            
+            <link rel="import" href="bower_components/paper-toolbar/paper-toolbar.html">
+            <link rel="import" href="bower_components/paper-header-panel/paper-header-panel.html">
+            <link rel="import" href="bower_components/paper-drawer-panel/paper-drawer-panel.html">
+            <link rel="import" href="bower_components/paper-scroll-header-panel/paper-scroll-header-panel.html">
+            
+            <paper-drawer-panel>
+				
+				<!-- This section hold the setting section!-->
+                <paper-header-panel drawer>
+                    <paper-toolbar><div>{{someProp}}</div></paper-toolbar>
+                    <link rel="import"  href="components/setting-component.html">
+					<setting-component response-data="{{responseData}}" some-prop="{{someProp}}"> </setting-component>
+				
+				</paper-header-panel>
+                 <!-- This section hold the high Chart!-->
+			     <paper-header-panel main>
+                      
+                     <link rel="import"  href="bower_components/paper-icon-button/paper-icon-button.html">
+                     <paper-icon-button icon="menu" paper-drawer-toggle>Toggle</paper-icon-button>
+                     
+                     <link rel="import" href="bower_components/paper-material/paper-material.html">
+                        <paper-toolbar><div></div></paper-toolbar>
+						<paper-material style="background-color:#fff">
+							<link rel="import"  href="components/highChart.html">
+							<high-chart id="element" some-prop="{{someProp}}" selected-value="{{selectedValue}}" 
+                                    selected-time="{{selectedTime}}"></high-chart>
+						</paper-material>
+                </paper-header-panel>
+			
+			</paper-drawer-panel>
+		</template>
+<dom-module>
+			
+		
+
+<script>
+
+Polymer({
+
+	is:"index-component",
+	properties:{
+				  someProp:{
+								type:String,
+								value: 'POLYMER JS',
+								notify:true
+                  },
+                  selectedValue:{
+                                  type: String,
+                                  value:'Bar',
+                                  notify:true
+                  },
+                  selectedTime:{
+                                    type:String,
+                                    notify:true
+                  },
+                  responseData:{
+                      type:String,
+                      notify:true
+                  }
+    },
+    
+    changeChart: function(selectedValue){
+        this.selectedValue =selectedValue; //observer is placed in highchart Component
+    },
+    
+    changeChartTimeSpan:function(TimeSpan){
+         this.selectedTime = TimeSpan;
+    },
+    
+    passJson:function(responseData){
+        this.responseData = responseData
+    }
+
+});
+
+
+
+</script>

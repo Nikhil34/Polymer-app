@@ -1,0 +1,43 @@
+<link rel="import"  href="../bower_components/polymer/polymer.html">
+<link rel="import"  href="custom-behvaiors.html">
+
+<!-- Component defination goes like below-->
+<dom-module id="first-component">
+
+<style>
+	h1{
+		color:red;
+	   }
+</style>
+<template>
+	<h1>{{title}}</h1>
+	<p>above title is comming up from Polymer function..!</p>
+
+</template>
+
+<dom-module>
+
+<script>
+
+Polymer({
+
+	is:"first-component",
+	properties:{
+		title:{
+			type: "String",
+			value:"First component is here !!!"
+		}
+	},
+	ready: function(){
+		console.log("document is ready")
+	},
+	behaviors:[customBehaviours.onChangeBehaviour],
+
+	_addPressedEnd: function(){
+		alert('abstract method')
+	}
+
+	
+});
+
+</script>

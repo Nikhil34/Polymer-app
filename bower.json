@@ -1,0 +1,28 @@
+{
+  "name": "Polymer-app",
+  "description": "0.0",
+  "main": "index.html",
+  "keywords": [
+    "polymer"
+  ],
+  "authors": [
+    "nick"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.7.0",
+    "iron-elements": "polymerelements/iron-elements#^1.0.10",
+    "paper-elements": "polymerelements/paper-elements#^1.0.7",
+    "google-web-components": "googlewebcomponents/google-web-components#^1.1.1",
+    "moment": "^2.15.2",
+    "web-component-tester": "Polymer/web-component-tester#^5.0.0"
+  }
+}
